@@ -1,4 +1,6 @@
-import { Link } from '#/i18n/routing';
+// import { Link } from '#/i18n/routing';
+
+import Link from "next/link";
 
 export interface Breadcrumb {
     label: string;
