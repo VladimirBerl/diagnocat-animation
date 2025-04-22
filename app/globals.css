@@ -1,0 +1,329 @@
+@import 'tailwindcss';
+
+@theme inline {
+  --font-sans: var(--font-hauss);
+  --font-serif: var(--font-sirius);
+  --color-foreground: var(--foreground);
+}
+
+@theme {
+  --color-*: initial;
+
+  --leading-33: 2.063rem;
+  --leading-52: 3.25rem;
+
+  --container-layout: 1440px;
+  --container-layout-small: 1000px;
+  --container-layout-xsmall: 850px;
+
+  --text-26: 1.625rem;
+  --text-26--line-height: 2rem;
+  --text-28: 1.75rem;
+  --text-28--line-height: 2.25rem;
+  --text-40: 2.5rem;
+  --text-40--line-height: 1;
+  --text-160: 10rem;
+  --text-160--line-height: 1;
+  --text-140: 8.75rem;
+  --text-140--line-height: 1;
+  --text-branded-xl: 1.25rem;
+  --text-branded-xl--line-height: 1.625rem;
+
+  --radius-80: 5rem;
+
+  --opacity-7: 0.07;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-purple: #5241cc;
+  --color-purple-translucent-8: rgba(82, 65, 204, 0.08);
+  --color-light-purple: #f5f4fb;
+  --color-dark-purple: #e2ddf8;
+  --color-grey: #f5f4fc;
+  --color-light-grey: #4c476d;
+  --color-border: #979eb0;
+  --color-border-secondary: #d9d9d9;
+  --color-testimonials-bg: #f2f0fb;
+
+  --background-image-button-hover: linear-gradient(82.39deg, #734ace 0%, #b949ee 98.21%);
+
+  --tracking-neg8: -0.5rem;
+
+  --translate-slider: calc(-80% - 20px);
+  --translate-slider-multiple: calc(2 * (-80% - 20px));
+
+  --spacing-25: calc(var(--spacing) * 25);
+
+  --breakpoint-branded: 90rem;
+  --breakpoint-full-hd: 120rem;
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 0.75rem;
+
+  @media (min-width: 48rem) {
+    padding-inline: 2rem;
+  }
+
+  @media (min-width: 80rem) {
+    padding-inline: 5rem;
+  }
+
+  @media (min-width: 96rem) {
+    max-width: 160rem;
+  }
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@layer utilities {
+  .container {
+    width: 100%;
+    @media (width >= 40rem) {
+      max-width: 40rem;
+    }
+    @media (width >= 48rem) {
+      max-width: 48rem;
+    }
+    @media (width >= 64rem) {
+      max-width: 64rem;
+    }
+    @media (width >= 80rem) {
+      max-width: 80rem;
+    }
+    @media (width >= 96rem) {
+      max-width: 90rem;
+    }
+  }
+
+  a {
+    @apply text-purple;
+  }
+}
+
+body {
+  @apply text-branded-xl font-sans;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-serif;
+}
+
+h1 {
+  @apply text-40 font-black;
+
+  @media (min-width: 64rem) {
+    @apply text-7xl;
+  }
+}
+
+h2 {
+  @apply text-3xl mb-3.5;
+
+  @media (min-width: 64rem) {
+    @apply text-5xl mb-8 leading-[3.3rem];
+  }
+}
+
+.h2 {
+  @apply text-3xl mb-3.5;
+
+  @media (min-width: 64rem) {
+    @apply text-5xl mb-8 leading-[3.3rem];
+  }
+}
+
+p {
+  @apply my-4;
+}
+
+.slick-track.slick-track {
+  @apply flex gap-5;
+}
+
+.slick-prev.slick-prev,
+.slick-next.slick-next {
+  @apply flex size-12 bg-grey  z-10;
+}
+
+.slick-prev.slick-prev:before,
+.slick-next.slick-next:before {
+  content: none;
+}
+
+.slick-prev.slick-prev {
+  @apply rotate-180 -left-4 top-[46%];
+}
+
+.slick-next.slick-next {
+  @apply -right-4;
+}
+
+.radiology-gradient-text {
+  background: conic-gradient(
+          from 254.53deg at 37.97% 50%,
+          #db00ff -44.78deg,
+          #7564ed 27.97deg,
+          #7564ed 44.81deg,
+          #ad00ff 112.19deg,
+          #64eded 147.5deg,
+          #cc3aff 195.91deg,
+          #f5a6f2 234.51deg,
+          #7564ed 249.58deg,
+          #7564ed 256.75deg,
+          #000aff 306.86deg,
+          #db00ff 315.22deg,
+          #7564ed 387.97deg
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.conic-gradient-block-variant-primary {
+  background: conic-gradient(
+          from -50deg at -0% -45%,
+          #db00ff -44.78deg,
+          #7564ed 27.97deg,
+          #7564ed 44.81deg,
+          #ad00ff 112.19deg,
+          #64eded 147.5deg,
+          #cc3aff 195.91deg,
+          #f5a6f2 234.51deg,
+          #7564ed 249.58deg,
+          #7564ed 256.75deg,
+          #000aff 306.86deg,
+          #db00ff 315.22deg,
+          #7564ed 387.97deg
+  );
+}
+
+.conic-gradient-block-variant-secondary {
+  background: conic-gradient(
+          from 45deg at 0 100%,
+          #db00ff -44.78deg,
+          #7564ed 27.97deg,
+          #7564ed 44.81deg,
+          #ad00ff 112.19deg,
+          #64eded 147.5deg,
+          #cc3aff 195.91deg,
+          #f5a6f2 234.51deg,
+          #7564ed 249.58deg,
+          #7564ed 256.75deg,
+          #000aff 306.86deg,
+          #db00ff 315.22deg,
+          #7564ed 387.97deg
+  );
+}
+
+.subscription-gradient-text {
+  background: conic-gradient(
+          from -70deg at 15% -50%,
+          #7564ed 27.96685963869095deg,
+          #7564ed 44.806003868579865deg,
+          #ad00ff 112.19146013259888deg,
+          #64eded 147.4997913837433deg,
+          #cc3aff 195.90571403503418deg,
+          #f5a6f2 234.51285123825073deg,
+          #7564ed 249.57626581192017deg,
+          #7564ed 256.7536211013794deg,
+          #000aff 306.8606758117676deg,
+          #7564ed 315.2191686630249deg
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.get-started-banner-gradient {
+  background: conic-gradient(
+          from 93.59deg at 47% 116.1%,
+          #DB00FF 33deg,
+          #7564ED 27.97deg,
+          #AD00FF 153deg,
+          #CC3AFF 195.91deg,
+          #000AFF 306.86deg,
+          #DB00FF 351deg,
+          #7564ED 387.97deg
+  );
+}
+
+.generated-content-page h1 {
+  font-size: 72px;
+  line-height: 1;
+}
+
+
+.generated-content-page img {
+  margin: 1rem 0;
+}
+
+.generated-content-page h2 {
+  margin-top: 112px;
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 33px;
+}
+
+.generated-content-page ol, .generated-content-page ul {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  padding-left: 1rem;
+  margin-block: 1rem;
+}
+
+.generated-content-page ol {
+  list-style-type: decimal;
+}
+
+.generated-content-page ul {
+  list-style-type: disc;
+}
+
+.generated-content-page ul li ul {
+  margin-top: 0.5rem;
+}
+
+.generated-content-page nav {
+  margin-top: 1rem;
+}
+
+.generated-content-page nav ul, .generated-content-page nav ol {
+  list-style-type: none;
+  padding-left: 0;
+  margin-block: 0;
+}
+
+.generated-content-page nav ul li ul, .generated-content-page nav ol li ul{
+  padding-left: 0.5rem;
+}
+
+.disclamer {
+  margin-inline: auto;
+  padding-inline: 0.75rem;
+
+  @media (min-width: 48rem) {
+    padding-inline: 2rem;
+  }
+
+  @media (min-width: 80rem) {
+    padding-inline: 5rem;
+  }
+
+  @media (min-width: 96rem) {
+    max-width: 160rem;
+  }
+}
