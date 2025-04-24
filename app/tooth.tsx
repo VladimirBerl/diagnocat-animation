@@ -9,7 +9,6 @@ import { cn } from "#utils/classnames";
 import { Header } from "#components/layout/header";
 
 import { SlideTitle } from "./slide-title";
-import styles from "./styles.module.css";
 
 import captions from "#assets/tooth/captions.png";
 import toothState1 from "#assets/tooth/tooth_state_1.png";
@@ -18,8 +17,7 @@ import toothState3 from "#assets/tooth/tooth_state_3.png";
 import toothState4 from "#assets/tooth/tooth_state_4.png";
 import toothState5 from "#assets/tooth/tooth_state_5.png";
 
-const toothBaseClassNames =
-  "pointer-events-none absolute left-1/2 -translate-x-1/2 transform will-change-transform";
+const toothBaseClassNames = "pointer-events-none absolute left-1/2 -translate-x-1/2";
 const slideContentRightClassNames =
   "pointer-events-none fixed inset-0 flex flex-col justify-center opacity-0";
 
@@ -66,10 +64,10 @@ export const Tooth = () => {
       return;
     }
 
-    masterTimeline.set(slideContentRef1.current, { yPercent: 100 });
-    masterTimeline.set(slideContentRef2.current, { yPercent: 100 });
-    masterTimeline.set(slideContentRef3.current, { yPercent: 100 });
-
+    masterTimeline.set(
+      [slideContentRef1.current, slideContentRef2.current, slideContentRef3.current],
+      { yPercent: 100 }
+    );
 
     masterTimeline
       .to([bgVideoRef.current, bgVideoContentRef.current], {
@@ -103,55 +101,54 @@ export const Tooth = () => {
         ease: "power3.inOut",
       })
       .to({}, { duration: 1 })
-      // 1. Move tooth left
       .to([tooth2Ref.current, tooth3Ref.current, tooth4Ref.current, tooth5Ref.current], {
-        x: "-50vh",
+        x: "-26vw",
         duration: 3.5,
         ease: "power3.inOut",
       })
       .to(captionsRef.current, { opacity: 0, duration: 2.5 }, "<")
-      // 2. Show video with healthy tooth
-      .to(slideContentRef1.current, {
-        yPercent: 0,
-        opacity: 1,
-        duration: 4.5,
-        ease: "power3.inOut",
-      }, "<")
-      // Pause to view video
+      .to(
+        slideContentRef1.current,
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 4.5,
+          ease: "power3.inOut",
+        },
+        "<"
+      )
       .to({}, { duration: 3 })
-      // 3. Show caries while video is still visible
       .to(tooth2Ref.current, { opacity: 0, duration: 3 })
       .to(tooth3Ref.current, { opacity: 1, duration: 3 }, "<")
-      // Another pause with both video and caries visible
       .to({}, { duration: 3 })
-      // 4. Hide video
       .to(slideContentRef1.current, {
         yPercent: -100,
         opacity: 0,
         duration: 4.5,
         ease: "power2.out",
       })
-      // 5. Move tooth with caries to the right
-      // .to({}, { duration: 1.5 })
       .to(
         [tooth3Ref.current, tooth4Ref.current, tooth5Ref.current],
         {
           x: "30vw",
-          y: "-65vh",
+          yPercent: -50,
+          top: "20%",
           scale: 0.65,
           duration: 3.5,
           ease: "power3.inOut",
         },
         "<"
       )
-      // .to({}, { duration: 1 })
-      // Rest of timeline remains the same
-      .to(slideContentRef2.current, {
-        yPercent: 0,
-        opacity: 1,
-        duration: 4.5,
-        ease: "power2.out",
-      }, "<")
+      .to(
+        slideContentRef2.current,
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 4.5,
+          ease: "power2.out",
+        },
+        "<"
+      )
       .to({}, { duration: 3 })
       .to(tooth3Ref.current, { opacity: 0, duration: 3 })
       .to(tooth4Ref.current, { opacity: 1, duration: 3 }, "<")
@@ -161,20 +158,24 @@ export const Tooth = () => {
         [tooth4Ref.current, tooth5Ref.current],
         {
           x: "-42vw",
-          y: "-120vh",
+          yPercent: -50,
+          top: "-30%",
           scale: 1.2,
           duration: 3.5,
           ease: "power3.inOut",
         },
         "<"
       )
-      // .to({}, { duration: 1 })
-      .to(slideContentRef3.current, {
-        yPercent: 0,
-        opacity: 1,
-        duration: 4.5,
-        ease: "power2.out",
-      }, "<")
+      .to(
+        slideContentRef3.current,
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 4.5,
+          ease: "power2.out",
+        },
+        "<"
+      )
       .to({}, { duration: 3 })
       .to(tooth4Ref.current, { opacity: 0, duration: 3 })
       .to(tooth5Ref.current, { opacity: 1, duration: 3 }, "<")
@@ -204,7 +205,6 @@ export const Tooth = () => {
       const scrollPosition = window.scrollY;
       const totalHeight = document.body.scrollHeight - window.innerHeight;
       const scrollProgress = Math.min(scrollPosition / totalHeight, 1);
-
 
       // Update timeline progress
       masterTimeline.progress(scrollProgress);
@@ -244,8 +244,7 @@ export const Tooth = () => {
             <div className="container text-center" ref={bgVideoContentRef}>
               <div
                 className={cn(
-                  "text-40 max-w-layout-small mx-auto mt-20 mb-6 font-serif font-black",
-                  styles.title
+                  "text-40 max-w-layout-small mx-auto mt-20 mb-6 font-serif font-black"
                 )}
               >
                 Smarter Imaging, Exceptional Care <br /> Everyday AI-Powered Solutions
@@ -289,10 +288,10 @@ export const Tooth = () => {
                 <div ref={tooth3Ref} className={cn(toothBaseClassNames, "top-10 opacity-0")}>
                   <Image src={toothState3} alt="" width={720} priority quality={100} />
                 </div>
-                <div ref={tooth4Ref} className={cn(toothBaseClassNames, "top-10 opacity-0")}>
+                <div ref={tooth4Ref} className={cn(toothBaseClassNames, " opacity-0")}>
                   <Image src={toothState4} alt="" width={720} priority quality={100} />
                 </div>
-                <div ref={tooth5Ref} className={cn(toothBaseClassNames, "top-10 opacity-0")}>
+                <div ref={tooth5Ref} className={cn(toothBaseClassNames, " opacity-0")}>
                   <Image src={toothState5} alt="" width={720} priority quality={100} />
                 </div>
                 <div
@@ -307,8 +306,7 @@ export const Tooth = () => {
                       muted
                       loop
                       playsInline
-
-                      >
+                    >
                       <source src="/video/eng-1.mp4" type="video/mp4" />
                     </video>
                   </div>
