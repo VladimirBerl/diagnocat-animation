@@ -40,11 +40,10 @@ export const Tooth = () => {
 
   useEffect(() => {
     if (!animationContainerRef.current) return;
-
-    // Create master timeline
+  
     const masterTimeline = gsap.timeline({ paused: true });
     (masterTimelineRef as any).current = masterTimeline;
-
+  
     const elements = [
       headerRef.current,
       bgVideoRef.current,
@@ -59,20 +58,19 @@ export const Tooth = () => {
       slideContentRef2.current,
       slideContentRef3.current,
     ];
+  
     if (elements.some((el) => !el)) {
       console.error("Some refs are not initialized:", elements);
       return;
     }
-
+  
     masterTimeline.set(
       [slideContentRef1.current, slideContentRef2.current, slideContentRef3.current],
       { yPercent: 100 }
     );
-
+  
     masterTimeline
-      .to([bgVideoRef.current, bgVideoContentRef.current], {
-        duration: 0,
-      })
+      .to([bgVideoRef.current, bgVideoContentRef.current], { duration: 0 })
       .to(tooth1Ref.current, {
         scale: 1.49,
         duration: 3.5,
@@ -126,19 +124,34 @@ export const Tooth = () => {
         opacity: 0,
         duration: 4.5,
         ease: "power2.out",
-      })
-      .to(
-        [tooth3Ref.current, tooth4Ref.current, tooth5Ref.current],
-        {
-          x: "30vw",
-          yPercent: -50,
-          top: "20%",
-          scale: 0.65,
-          duration: 3.5,
-          ease: "power3.inOut",
-        },
-        "<"
-      )
+      });
+  
+    const mm = gsap.matchMedia();
+    mm.add(
+      {
+        isLarge: "(min-width: 2000px)",
+        isDefault: "(max-width: 1999px)",
+      },
+      (context) => {
+        const isLarge = context.conditions?.isLarge;
+  
+        masterTimeline.to(
+          [tooth3Ref.current, tooth4Ref.current, tooth5Ref.current],
+          {
+            x: "30vw",
+            yPercent: -50,
+            top: isLarge ? "25%" : "10%",
+            scale: isLarge? 1:  0.65,
+            duration: 3.5,
+            ease: "power3.inOut",
+          },
+          "<"
+        );
+      }
+    );
+  
+    // Остальная часть продолжения анимации
+    masterTimeline
       .to(
         slideContentRef2.current,
         {
@@ -199,28 +212,24 @@ export const Tooth = () => {
         },
         "<"
       );
-
+  
     const scrollHandler = () => {
-      // Calculate progress based on scroll position
       const scrollPosition = window.scrollY;
       const totalHeight = document.body.scrollHeight - window.innerHeight;
       const scrollProgress = Math.min(scrollPosition / totalHeight, 1);
-
-      // Update timeline progress
       masterTimeline.progress(scrollProgress);
     };
-
-    // Enable normal scrolling
+  
     document.body.style.overflow = "";
-
-    // Add scroll listener
     window.addEventListener("scroll", scrollHandler);
-
+  
     return () => {
       window.removeEventListener("scroll", scrollHandler);
       masterTimeline.kill();
+      mm.kill(); // 👈 Не забудь очистить matchMedia
     };
   }, []);
+  
 
   return (
     <div className="h-[500vh]">
@@ -288,10 +297,10 @@ export const Tooth = () => {
                 <div ref={tooth3Ref} className={cn(toothBaseClassNames, "top-10 opacity-0")}>
                   <Image src={toothState3} alt="" width={720} priority quality={100} />
                 </div>
-                <div ref={tooth4Ref} className={cn(toothBaseClassNames, " opacity-0")}>
+                <div ref={tooth4Ref} className={cn(toothBaseClassNames, "top-10 opacity-0")}>
                   <Image src={toothState4} alt="" width={720} priority quality={100} />
                 </div>
-                <div ref={tooth5Ref} className={cn(toothBaseClassNames, " opacity-0")}>
+                <div ref={tooth5Ref} className={cn(toothBaseClassNames, "top-10 opacity-0")}>
                   <Image src={toothState5} alt="" width={720} priority quality={100} />
                 </div>
                 <div
