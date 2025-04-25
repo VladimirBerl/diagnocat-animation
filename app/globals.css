@@ -147,9 +147,6 @@ h2 {
   }
 }
 
-p {
-  @apply my-4;
-}
 
 .slick-track.slick-track {
   @apply flex gap-5;

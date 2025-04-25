@@ -9,6 +9,7 @@ import { cn } from "#utils/classnames";
 import { Header } from "#components/layout/header";
 
 import { SlideTitle } from "./slide-title";
+import { SliderPin, ThemesPin } from "./slider-pin";
 
 import captions from "#assets/tooth/captions.png";
 import toothState1 from "#assets/tooth/tooth_state_1.png";
@@ -16,6 +17,31 @@ import toothState2 from "#assets/tooth/tooth_state_2.png";
 import toothState3 from "#assets/tooth/tooth_state_3.png";
 import toothState4 from "#assets/tooth/tooth_state_4.png";
 import toothState5 from "#assets/tooth/tooth_state_5.png";
+
+const mokiSliderPin: { [key: string]: { des: string; percent?: string; theme?: ThemesPin }[] } = {
+  restorative: [
+    { des: "Caries sign", percent: "73", theme: ThemesPin.red },
+    { des: "Buccal", theme: ThemesPin.redLight },
+    { des: "Occlusal", theme: ThemesPin.redLight },
+    { des: "Dentin", theme: ThemesPin.redLight },
+    { des: "Filling", percent: "83", theme: ThemesPin.pink },
+  ],
+  periodontium: [
+    { des: "Filling", percent: "83", theme: ThemesPin.pink },
+    { des: "Caries sign", percent: "73", theme: ThemesPin.red },
+    { des: "Dental calculus", percent: "54", theme: ThemesPin.red },
+    { des: "Periodontal bone loss", percent: "48", theme: ThemesPin.red },
+    { des: "Periapical radiolucency", percent: "48", theme: ThemesPin.red },
+  ],
+  pathologies: [
+    { des: "Filling", percent: "83", theme: ThemesPin.pink },
+    { des: "Endodontically treated tooth", percent: "83", theme: ThemesPin.pink },
+    { des: "Adequate abturation", theme: ThemesPin.pinkLight },
+    { des: "Adequate density", theme: ThemesPin.pinkLight },
+    { des: "Periapical radiopacity", percent: "73", theme: ThemesPin.red },
+    { des: "Periapical radiolucency", percent: "73", theme: ThemesPin.red },
+  ],
+};
 
 const toothBaseClassNames = "pointer-events-none absolute left-1/2 -translate-x-1/2";
 const slideContentRightClassNames =
@@ -40,10 +66,10 @@ export const Tooth = () => {
 
   useEffect(() => {
     if (!animationContainerRef.current) return;
-  
+
     const masterTimeline = gsap.timeline({ paused: true });
     (masterTimelineRef as any).current = masterTimeline;
-  
+
     const elements = [
       headerRef.current,
       bgVideoRef.current,
@@ -58,17 +84,17 @@ export const Tooth = () => {
       slideContentRef2.current,
       slideContentRef3.current,
     ];
-  
+
     if (elements.some((el) => !el)) {
       console.error("Some refs are not initialized:", elements);
       return;
     }
-  
+
     masterTimeline.set(
       [slideContentRef1.current, slideContentRef2.current, slideContentRef3.current],
       { yPercent: 100 }
     );
-  
+
     masterTimeline
       .to([bgVideoRef.current, bgVideoContentRef.current], { duration: 0 })
       .to(tooth1Ref.current, {
@@ -125,7 +151,7 @@ export const Tooth = () => {
         duration: 4.5,
         ease: "power2.out",
       });
-  
+
     const mm = gsap.matchMedia();
     mm.add(
       {
@@ -134,14 +160,14 @@ export const Tooth = () => {
       },
       (context) => {
         const isLarge = context.conditions?.isLarge;
-  
+
         masterTimeline.to(
           [tooth3Ref.current, tooth4Ref.current, tooth5Ref.current],
           {
             x: "30vw",
             yPercent: -50,
             top: isLarge ? "25%" : "10%",
-            scale: isLarge? 1:  0.65,
+            scale: isLarge ? 1 : 0.65,
             duration: 3.5,
             ease: "power3.inOut",
           },
@@ -149,7 +175,7 @@ export const Tooth = () => {
         );
       }
     );
-  
+
     // Остальная часть продолжения анимации
     masterTimeline
       .to(
@@ -212,24 +238,23 @@ export const Tooth = () => {
         },
         "<"
       );
-  
+
     const scrollHandler = () => {
       const scrollPosition = window.scrollY;
       const totalHeight = document.body.scrollHeight - window.innerHeight;
       const scrollProgress = Math.min(scrollPosition / totalHeight, 1);
       masterTimeline.progress(scrollProgress);
     };
-  
+
     document.body.style.overflow = "";
     window.addEventListener("scroll", scrollHandler);
-  
+
     return () => {
       window.removeEventListener("scroll", scrollHandler);
       masterTimeline.kill();
       mm.kill(); // 👈 Не забудь очистить matchMedia
     };
   }, []);
-  
 
   return (
     <div className="h-[500vh]">
@@ -307,10 +332,20 @@ export const Tooth = () => {
                   ref={slideContentRef1}
                   className={cn(slideContentRightClassNames, "items-end right-[5vw]")}
                 >
-                  <div className="flex flex-col items-center">
+                  <div className="flex flex-col items-center justify-center">
                     <SlideTitle title="Appears to be restorative" theme="pink" />
+                    <div className="flex flex-wrap justify-center gap-px max-w-[505px] mt-[0.813rem] mb-[1.438rem]">
+                      {mokiSliderPin.restorative.map((item, index) => (
+                        <SliderPin
+                          key={index}
+                          des={item.des}
+                          percent={item.percent}
+                          theme={item.theme}
+                        />
+                      ))}
+                    </div>
                     <video
-                      className="inset-0 mt-10 max-w-[53vw] rounded-2xl object-cover"
+                      className="inset-0 max-w-[53vw] rounded-2xl object-cover"
                       autoPlay
                       muted
                       loop
@@ -324,10 +359,20 @@ export const Tooth = () => {
                   ref={slideContentRef2}
                   className={cn(slideContentRightClassNames, "items-start left-[5vw]")}
                 >
-                  <div className="flex flex-col items-center">
+                  <div className="flex flex-col items-center justify-center">
                     <SlideTitle title="Appears to be restorative" theme="red" />
+                    <div className="flex flex-wrap justify-center gap-px max-w-[536px] mt-[0.813rem] mb-[1.438rem]">
+                      {mokiSliderPin.periodontium.map((item, index) => (
+                        <SliderPin
+                          key={index}
+                          des={item.des}
+                          percent={item.percent}
+                          theme={item.theme}
+                        />
+                      ))}
+                    </div>
                     <video
-                      className="inset-0 mt-10 max-w-[53vw] rounded-2xl object-cover"
+                      className="inset-0 max-w-[53vw] rounded-2xl object-cover"
                       autoPlay
                       muted
                       loop
@@ -343,8 +388,18 @@ export const Tooth = () => {
                 >
                   <div className="flex flex-col items-center">
                     <SlideTitle title="Appears to be endodontic pathologies" theme="gold" />
+                    <div className="flex flex-wrap justify-center gap-px max-w-[726px] mt-[0.813rem] mb-[1.438rem]">
+                      {mokiSliderPin.pathologies.map((item, index) => (
+                        <SliderPin
+                          key={index}
+                          des={item.des}
+                          percent={item.percent}
+                          theme={item.theme}
+                        />
+                      ))}
+                    </div>
                     <video
-                      className="inset-0 mt-10 max-w-[53vw] rounded-2xl object-cover"
+                      className="inset-0 max-w-[53vw] rounded-2xl object-cover"
                       autoPlay
                       muted
                       loop
